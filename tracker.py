@@ -12,11 +12,7 @@ options.add_argument('--disable-dev-shm-usage')
 options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
 options.add_argument('--log-level=3')
 
-chromedriver_path = "C:\\Users\\andre\\chromedriver-win64\\chromedriver.exe"
-service = Service(chromedriver_path)
-print(chromedriver_path)
-
-driver = webdriver.Chrome(service=service, options=options)
+driver = webdriver.Chrome( options=options)
 driver.get("https://store.epicgames.com/it/")
 contentEpic = driver.page_source
 
