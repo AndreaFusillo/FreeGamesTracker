@@ -4,6 +4,8 @@ import tkinter as tk
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import threading
+
 
 options = webdriver.ChromeOptions()
 options.set_capability('goog:loggingPrefs', {'browser': 'ALL'})
@@ -20,58 +22,69 @@ window.geometry("600x600")
 window.title("FreeGamesTracker")
 window.resizable(False, False)
 window.configure(background="white")
-
-if __name__ == "__main__":
-    window.mainloop()
-
 driver = webdriver.Chrome( options=options)
-driver.get("https://store.epicgames.com/it/")
-contentEpic = driver.page_source
-
-soupEpic = BeautifulSoup(contentEpic, "html.parser")
 
 giochiGratisEpic = []
 giochiGratisGoG = []
 giochiGratisPrime = []
 
-for a in soupEpic.find_all("div", class_="css-1vu10h2"):
-    name= a.find('span', attrs={'class':'css-119zqif'})
-    giochiGratisEpic.append(name.text)
+def Epic(Lista):
+    driver = webdriver.Chrome( options=options)
+    driver.get("https://store.epicgames.com/it/")
+    contentEpic = driver.page_source
+    soupEpic = BeautifulSoup(contentEpic, "html.parser")
+    for a in soupEpic.find_all("div", class_="css-1vu10h2"):
+        name= a.find('span', attrs={'class':'css-119zqif'})
+        Lista.append(name.text)
+
+def GoG(Lista):
+    driver = webdriver.Chrome( options=options)
+    driver.get("https://www.gog.com/partner/free_games")
+    contentGog = driver.page_source
+    soupGoG = BeautifulSoup(contentGog, "html.parser")
+    for b in soupGoG.find_all("span", class_="product-title__text"):
+        Lista.append(b.text)
+
+def Prime(Lista):
+    driver = webdriver.Chrome( options=options)
+    driver.get("https://gaming.amazon.com/intro")
+    try:
+        e = WebDriverWait(driver, 3).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, 'tw-amazon-ember tw-amazon-ember-bold tw-bold tw-c-text-overlay tw-font-size-6'))
+        )
+        
+    except Exception as e:
+        print("")
+    contentPrime = driver.page_source
+    soupGoG = BeautifulSoup(contentPrime, "html.parser")
+
+
+    for c in soupGoG.find_all("p", class_="tw-amazon-ember tw-amazon-ember-bold tw-bold tw-c-text-overlay tw-font-size-6"):
+        Lista.append(c.text)
 
 
 
-driver.get("https://www.gog.com/partner/free_games")
-contentGog = driver.page_source
-soupGoG = BeautifulSoup(contentGog, "html.parser")
+if __name__ =="__main__":
+    t1 = threading.Thread(target=Epic, args=(giochiGratisEpic,))
+    t2 = threading.Thread(target=GoG, args=(giochiGratisGoG,))
+    t3 = threading.Thread(target=Prime, args=(giochiGratisPrime,))
 
-for b in soupGoG.find_all("span", class_="product-title__text"):
-    giochiGratisGoG.append(b.text)
+    t1.start()
+    t2.start()
+    t3.start()
 
-driver.get("https://gaming.amazon.com/intro")
+    t1.join()
+    t2.join()
+    t3.join()
 
-try:
-    elemento = WebDriverWait(driver, 13).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, 'tw-amazon-ember tw-amazon-ember-bold tw-bold tw-c-text-overlay tw-font-size-6'))
-    )
+    print("GIOCHI GRATIS DEI VARI CLIENT")
+    print("EPIC STORE:")
+    print(giochiGratisEpic)
+    print("PRIME GAMING")
+    print(giochiGratisPrime)
+    print("GOG.COM")
+    print(giochiGratisGoG)
     
-except Exception as e:
-    print(f"")
-contentPrime = driver.page_source
-soupGoG = BeautifulSoup(contentPrime, "html.parser")
+    window.mainloop()
 
-
-for c in soupGoG.find_all("p", class_="tw-amazon-ember tw-amazon-ember-bold tw-bold tw-c-text-overlay tw-font-size-6"):
-    giochiGratisPrime.append(c.text)
-   
-
-
-print("GIOCHI GRATIS DEI VARI CLIENT")
-print("EPIC STORE:")
-print(giochiGratisEpic)
-print("PRIME GAMING")
-print(giochiGratisPrime)
-print("GOG.COM")
-print(giochiGratisGoG)
-#for b in giochiGratis:
-    #print(giochiGratis.find_all("span", class_="css-119zqif"))
 
