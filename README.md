@@ -1,1 +1,1 @@
-Un semplice tracker per tenere traccia dei giochi gratuit rilasciati dai vari client
+Un semplice tracker per tenere traccia dei giochi gratuiti rilasciati dai vari client sviluppato in python sfruttando il multithreading per rendere più efficiente il webscraping, TKinter utilizzato invece per la GUI 
