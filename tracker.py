@@ -73,14 +73,14 @@ def crea_colonna(master, lista, titolo):
         elemento_label.pack(anchor='w')
 
 def main():
-    # Creazione della finestra principale
+    
     root = tk.Tk()
     root.title("Tracker Giochi Gratis")
     
-    # Impostazione delle dimensioni iniziali della finestra
+    
     root.geometry("400x700")
     
-    # Creazione di un frame con scrollbar
+    
     main_frame = tk.Frame(root)
     main_frame.pack(fill=tk.BOTH, expand=1)
     
@@ -102,13 +102,13 @@ def main():
     canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
     canvas.configure(yscrollcommand=scrollbar.set)
     
-    # Creazione delle colonne per ciascuna lista
+    
     crea_colonna(scrollable_frame, giochiGratisEpic, "EPIC")
     crea_colonna(scrollable_frame, giochiGratisPrime, "PRIME")
     crea_colonna(scrollable_frame, giochiGratisGoG, "GOG")
     
 
-    # Binding per lo scorrimento con la rotellina del mouse e il touchpad
+    
     def _on_mouse_wheel(event):
         if event.delta:
             canvas.yview_scroll(int(-1*(event.delta/120)), "units")
@@ -121,7 +121,7 @@ def main():
     canvas.bind_all("<Button-4>", _on_mouse_wheel)
     canvas.bind_all("<Button-5>", _on_mouse_wheel)
 
-    # Binding per lo scorrimento con le frecce direzionali
+    
     def _on_arrow_keys(event):
         if event.keysym in ('Up', 'Down'):
             canvas.yview_scroll(1 if event.keysym == 'Down' else -1, "units")
@@ -129,7 +129,7 @@ def main():
     root.bind_all("<Up>", _on_arrow_keys)
     root.bind_all("<Down>", _on_arrow_keys)
 
-    # Avvio del loop principale
+    
     root.mainloop()
 
 if __name__ =="__main__":
@@ -147,13 +147,7 @@ if __name__ =="__main__":
 
     main()
     
-    print("GIOCHI GRATIS DEI VARI CLIENT")
-    print("EPIC STORE:")
-    print(giochiGratisEpic)
-    print("PRIME GAMING")
-    print(giochiGratisPrime)
-    print("GOG.COM")
-    print(giochiGratisGoG)
+    
     
     
 
